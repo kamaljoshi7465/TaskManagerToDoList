@@ -1,0 +1,71 @@
+<nav class="navbar navbar-dark bg-primary p-3">
+  <a class="navbar-brand text-white" href="<%= root_path %>">Task List</a>
+  <%= link_to "New Task", new_task_path, class: "btn btn-light" %>
+</nav>
+
+<div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+  <div>
+    <%= form_with url: tasks_path, method: :get, local: true, class: "d-inline-block" do %>
+      <label for="sort" class="me-2">Sort by:</label>
+      <%= select_tag :sort, options_for_select([["Select Sorting", ""], ["Due Date", "due_date"], ["Priority", "priority"]], params[:sort]), 
+        class: "form-select d-inline-block w-auto", onchange: "this.form.submit();" %>
+    <% end %>
+  </div>
+
+  <div class="w-50">
+    <p class="mb-1"><strong>Task Completion:</strong></p>
+    <div class="progress">
+      <div class="progress-bar bg-success" role="progressbar" style="width: <%= @tasks.count.zero? ? 0 : (@tasks.completed.count.to_f / @tasks.count * 100).round %>%;" aria-valuenow="<%= @tasks.count.zero? ? 0 : (@tasks.completed.count.to_f / @tasks.count * 100).round %>" aria-valuemin="0" aria-valuemax="100">
+        <%= @tasks.count.zero? ? 0 : (@tasks.completed.count.to_f / @tasks.count * 100).round %>%
+      </div>
+    </div>
+  </div>
+</div>
+
+<table class="table table-bordered table-striped">
+  <thead class="table-dark">
+    <tr>
+      <th></th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Priority</th>
+      <th>Due Date</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tasks.each_with_index do |task, index| %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= task.title %></td>
+        <td><%= task.description %></td>
+        <td>
+        <span class="<%= task.priority == 1 ? 'badge text-success' : task.priority == 2 ? 'badge text-warning' : 'badge text-danger' %>">
+          <%= task.priority == 1 ? "Low" : task.priority == 2 ? "Medium" : "High" %>
+        </span>      
+        </td>
+        <td><%= task.due_date %></td>
+        <td>
+          <% status_classes = { "pending" => "badge text-warning", "in_progress" => "badge text-info", "completed" => "badge text-success" } %>
+          <span class="<%= status_classes[task.status] %>">
+            <%= task.status.titleize %>
+          </span>
+        </td>
+        <td class="d-flex gap-2">
+          <%= link_to "Edit", edit_task_path(task), class: "btn btn-sm btn-primary" %>
+          <%= button_to "Delete", task, method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "btn btn-sm btn-danger" %>
+
+          <%= form_with url: update_status_task_path(task), method: :patch, local: true, class: "d-inline-block" do %>
+            <%= hidden_field_tag :sort, params[:sort] %>
+            <%= select_tag "task[status]", 
+              options_for_select(Task.statuses.keys.map { |s| [s.titleize, s] }, task.status),
+              class: "form-select form-select-sm d-inline-block w-auto",
+              onchange: "this.form.submit();" %>
+          <% end %>
+
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
