@@ -24,7 +24,7 @@
     </div>
 
     <div class="col-md-6">
-      <%= form.label :due_date, class: k"form-label" %>
+      <%= form.label :due_date, class: "form-label" %>
       <%= form.date_field :due_date, class: "form-control", min: Date.today.to_s %>
       <% @task.errors[:due_date].each do |error| %>
         <p class="text-red-500 text-sm mt-1"><%= error %></p>

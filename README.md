@@ -27,6 +27,7 @@ cd TaskManagerToDoList
 ### Install Dependencies
 ```sh
 bundle install
+rails tailwindcss:install
 ```
 
 ### Database Setup
