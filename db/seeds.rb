@@ -1,17 +1,7 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
-
 tasks = [
   {
-    title: 'Complete project proposal',
-    description: 'Draft and finalize the project proposal for the new client.',
+    title: 'Check emails and messages',
+    description: 'Review emails and messages on Slack or Teams for any important updates.',
     priority: 2,
     due_date: Date.today + 7.days,
     status: :pending
@@ -24,15 +14,15 @@ tasks = [
     status: :in_progress
   },
   {
-    title: 'Code review',
-    description: 'Review code submissions from team members.',
+    title: 'Fix minor bugs',
+    description: 'Work on fixing small, assigned bugs in the project.',
     priority: 3,
     due_date: Date.today + 3.days,
     status: :pending
   },
   {
-    title: 'Client feedback',
-    description: 'Gather and analyze feedback from the client on the recent deliverable.',
+    title: 'Write unit tests',
+    description: 'Write and improve unit tests for recently developed features.',
     priority: 1,
     due_date: Date.today + 5.days,
     status: :completed
